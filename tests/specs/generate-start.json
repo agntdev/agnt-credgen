@@ -7,7 +7,7 @@
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Initiate credential generation workflow"
+              "text": "How many credential pairs do you need? Enter a whole number from 1 to 25."
             }
           }
         ],
@@ -15,6 +15,35 @@
           "callback": "generate:start"
         }
       }
+    ]
+  }
+  ,
+  {
+    "name": "Generate a default credential batch",
+    "steps": [
+      {
+        "send": { "callback": "generate:start" },
+        "expect": [{ "method": "sendMessage", "payload": { "text": "How many credential pairs do you need? Enter a whole number from 1 to 25." } }]
+      },
+      {
+        "send": { "text": "2" },
+        "expect": [{ "method": "sendMessage", "payload": { "text": "Use your saved pattern “account{n}”?" } }]
+      },
+      {
+        "send": { "callback": "generate:use-pattern" },
+        "expect": [
+          { "method": "sendMessage" },
+          { "method": "sendDocument" },
+          { "method": "sendDocument" }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Reject an invalid batch size",
+    "steps": [
+      { "send": { "callback": "generate:start" }, "expect": [] },
+      { "send": { "text": "zero" }, "expect": [{ "method": "sendMessage", "payload": { "text": "Enter a whole number from 1 to 25." } }] }
     ]
   }
 ]

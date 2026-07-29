@@ -6,7 +6,12 @@ import type { StorageAdapter } from "grammy";
 // bot grows. Durable domain data must NOT live here — use the toolkit's
 // persistent storage (see AGENTS.md).
 export interface Session {
-  // example: step?: "awaiting_amount";
+  step?: "awaiting_batch_size" | "awaiting_generation_pattern" | "awaiting_setting_pattern" | "awaiting_setting_limit";
+  pendingBatchSize?: number;
+  pendingUsernamePattern?: string;
+  flowExpiresAt?: number;
+  /** Durable owner data. The toolkit persists this through Redis or the Worker Durable Object. */
+  credentialData?: import("./credentials.js").CredentialData;
 }
 
 export type Ctx = BotContext<Session>;

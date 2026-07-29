@@ -7,7 +7,7 @@
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Adjust username patterns, password policies, and batch limits"
+              "text": "Your settings\n\nUsername pattern: account{n}\nPassword strength: strong\nBatch limit: 25\nCSV header: included"
             }
           }
         ],
@@ -15,6 +15,22 @@
           "callback": "settings:view"
         }
       }
+    ]
+  }
+  ,
+  {
+    "name": "Settings persist while the conversation continues",
+    "steps": [
+      { "send": { "callback": "settings:view" }, "expect": [] },
+      { "send": { "callback": "settings:header" }, "expect": [{ "method": "sendMessage", "payload": { "text": "CSV header removed." } }] },
+      { "send": { "callback": "settings:view" }, "expect": [{ "method": "sendMessage", "payload": { "text": "Your settings\n\nUsername pattern: account{n}\nPassword strength: strong\nBatch limit: 25\nCSV header: not included" } }] }
+    ]
+  },
+  {
+    "name": "Reject an invalid username pattern",
+    "steps": [
+      { "send": { "callback": "settings:pattern" }, "expect": [{ "method": "sendMessage", "payload": { "text": "Enter a username pattern with {n}, such as account{n}." } }] },
+      { "send": { "text": "Account" }, "expect": [{ "method": "sendMessage", "payload": { "text": "That pattern won't work. Include {n} so every username is unique." } }] }
     ]
   }
 ]
