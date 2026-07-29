@@ -9,9 +9,13 @@ import { mainMenuKeyboard } from "../toolkit/index.js";
 // file to add a feature. Send ONE message — no placeholder line above the menu.
 const composer = new Composer<Ctx>();
 
-const WELCOME = "👋 Welcome! Tap a button below to get started.";
+const WELCOME = "Create credential batches and manage your settings.\n\nYour current settings are ready to use.";
 
 composer.command("start", async (ctx) => {
+  ctx.session.step = undefined;
+  ctx.session.pendingBatchSize = undefined;
+  ctx.session.pendingUsernamePattern = undefined;
+  ctx.session.flowExpiresAt = undefined;
   await ctx.reply(WELCOME, { reply_markup: mainMenuKeyboard() });
 });
 
